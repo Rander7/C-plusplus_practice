@@ -445,3 +445,583 @@
 //}
 
 ////==============================================================================================================================
+
+//set/multiset容器，所有元素在插入时候自动被排序
+//关联式容器：二叉树实现
+//set不允许重复元素，插入时候不报错但是最后只插入一个
+
+//#include<iostream>
+//#include<set>
+//#include<algorithm>
+//#include<string>
+//using namespace std;
+//
+//void myprint(int val)
+//{
+//	cout << val << " ";
+//}
+//
+//class Cmp
+//{
+//public:
+//	bool operator()(const int& val1, const int& val2) const//注意是常函数const
+//	{
+//		return val1 > val2;
+//	}
+//};
+//
+//class Person
+//{
+//public:
+//	string m_name;
+//	int m_age;
+//
+//	Person(string name, int age)
+//	{
+//		this->m_name = name;
+//		this->m_age = age;
+//	}
+//};
+//
+//class CmpP
+//{
+//public:
+//	bool operator()(const Person& p1, const Person& p2) const
+//	{
+//		return p1.m_age > p2.m_age;
+//	}
+//};
+//
+//
+//int main()
+//{
+//
+//	set<int>s;
+//	s.insert(1);//插入时候只有insert
+//	s.insert(6);
+//	s.insert(3);
+//	s.insert(2);
+//	s.insert(5);
+//
+//	for_each(s.begin(), s.end(), myprint);
+//	cout << endl;
+//
+//	s.erase(3);//删除指定值的元素
+//	for_each(s.begin(), s.end(), myprint);
+//	cout << endl;
+//	s.erase(s.begin(), ++s.begin());
+//	for_each(s.begin(), s.end(), myprint);
+//	cout << endl;
+//
+//	pair < set<int>::iterator, bool>ret = s.insert(2);//返回值是一个对组，multiset插入无返回值
+//	if (ret.second)
+//	{
+//		cout << "插入成功" << endl;
+//		for_each(s.begin(), s.end(), myprint);
+//		cout << endl;
+//	}
+//	else
+//	{
+//		cout << "插入失败" << endl;
+//	}
+//
+//	pair<int, bool>pair1(1, true);		//对组的创建和使用
+//	pair<int, bool>pair2 = make_pair(2, false);
+//
+//	cout << pair1.first << " " << pair1.second << endl;
+//	cout << pair2.first << " " << pair2.second << endl;
+//
+//	//普通int类型更改排序方式
+//	set<int, Cmp>s1;//自定义排序方式，其中第二个参数是仿函数类名
+//	//注意仿函数不仅要传入变量const不可修改还必须是常函数const
+//	s1.insert(1);
+//	s1.insert(6);
+//	s1.insert(3);
+//	s1.insert(2);
+//	s1.insert(5);
+//	for_each(s1.begin(), s1.end(), myprint);
+//
+//	//自定义Person类型更改排序方式
+//	set<Person, CmpP>sp;
+//	Person p1("a", 12);
+//	Person p2("b", 11);
+//	Person p3("c", 18);
+//	Person p4("d", 14);
+//	Person p5("e", 16);
+//	Person p6("f", 15);
+//	Person p7("g", 17);
+//
+//	sp.insert(p1);
+//	sp.insert(p2);
+//	sp.insert(p3);
+//	sp.insert(p4);
+//	sp.insert(p5);
+//	sp.insert(p6);
+//	sp.insert(p7);
+//
+//	for (set<Person, CmpP>::iterator it = sp.begin(); it != sp.end(); it++)
+//	{
+//		cout << (*it).m_name << " " << (*it).m_age << endl;
+//	}
+//
+//	system("pause");
+//	return 0;
+//}
+
+////==================================================================================================
+////map/multimap
+//map所有元素都是pair
+//pair中第一个元素是key，起索引作用，第二个为value
+//所有元素根据key值在插入时候自动排序，指定排序只能对key操作
+//map不允许key有重复值，但是value可以有重复值
+
+//#include<iostream>
+//#include<map>
+//#include<algorithm>
+//using namespace std;
+//
+//void myprint(pair<int,int>p)
+//{
+//	cout << p.first << " " << p.second << endl;
+//}
+//
+//int main()
+//{
+//	map<int, int>m1;
+//	map<int, int>m2;
+//	map<int, int>m3;
+//	map<int, int>m4;
+//	m1.insert(pair<int, int>(1, 10));//使用匿名对组方式插入
+//	m2.insert(make_pair(2, 20));//使用make_pair创建对组
+//	m3.insert(map<int, int>::value_type(3, 30));
+//	m4[4] = 40;//4是key，不建议在插入时候使用，在用key找value时候可以用
+//
+//	m1.insert(make_pair(2, 20));
+//	m1.insert(make_pair(3, 20));
+//	m1.insert(make_pair(4, 20));
+//	m1.insert(make_pair(5, 20));
+//	m1.insert(make_pair(6, 20));
+//	m1.erase(2);//删除key为2的
+//
+//	map<int,int>::iterator where=m1.find(3);//分别是找到key为3的和计数key为3的个数
+//	if (where != m1.end())
+//	{
+//		//cout << (where - m1.begin());//不能求迭代器之间差值算是第几个
+//		//因为map不是线性的
+//		map<int, int>::iterator it = m1.begin();
+//		int n = 1;
+//		while (it != where)
+//		{
+//			n++;
+//			it++;
+//		}
+//		cout << "找到了位序是："<<n<<" 并且其value值为" << (*where).second << endl;
+//	}
+//	else
+//	{
+//		cout << "没有找到" << endl;
+//	}
+//	int count=m1.count(3);
+//	cout << "key值为3的有" << count << "个" << endl;
+//
+//	for_each(m1.begin(), m1.end(), myprint);
+//	cout << endl;
+//
+//	system("pause");
+//	return 0;
+//}
+
+
+////更改set和map容器插入时候排序方式
+//#include<iostream>
+//#include<map>
+//#include<set>
+//#include<string>
+//using namespace std;
+//
+//class Person
+//{
+//public:
+//	string m_name;
+//	int m_age;
+//
+//	Person(string name, int age) :m_name(name), m_age(age) {}
+//};
+//
+//class cmp
+//{
+//public:
+//	bool operator()(const Person& p1, const Person& p2)const
+//	{
+//		return p1.m_age > p2.m_age;
+//	}
+//};
+//
+//void prints(set<Person, cmp>& s)
+//{
+//	for (set<Person, cmp>::iterator it = s.begin(); it != s.end(); it++)
+//	{
+//		cout << it->m_name << " " << it->m_age << endl;
+//	}
+//}
+//
+//class cmp1
+//{
+//public:
+//	bool operator()(const int& v1, const int& v2) const			//注意加上const
+//	{
+//		return v1 > v2;
+//	}
+//};
+//
+//
+//
+//void printm(map<int, Person,cmp1>& m)
+//{
+//	for (map<int, Person, cmp1>::iterator it = m.begin(); it != m.end(); it++)
+//	{
+//		cout <<it->first<<" " << it->second.m_name << " " << it->second.m_age << endl;
+//	}
+//}
+//
+//int main()
+//{
+//	set<Person,cmp>s;
+//	map<int, Person,cmp1>m;
+//
+//	Person p1("a", 3);
+//	Person p2("b", 2);
+//	Person p3("c", 4);
+//	Person p4("d", 1);
+//	
+//	s.insert(p1);
+//	s.insert(p2);
+//	s.insert(p3);
+//	s.insert(p4);
+//
+//	prints(s);
+//
+//	//注意map的排序人为只能规定key值从大到小或者从小到大
+//
+//	m.insert(pair<int, Person>(1, p1));
+//	m.insert(pair<int, Person>(2, p2));
+//	m.insert(pair<int, Person>(3, p3));
+//	m.insert(pair<int, Person>(4, p4));
+//
+//	printm(m);
+//	
+//
+//	system("pause");
+//	return 0;
+//}
+
+
+///更改map容器插入时候排序方式
+////map容器排序时候按照key值排序，后面value值对排序没有作用
+////原本索引是int值，现在定义类salary，重新用新方式排序
+//#include<iostream>
+//#include<map>
+//#include<string>
+//using namespace std;
+//
+//class Person
+//{
+//public:
+//	string m_name;
+//	int m_age;
+//
+//	Person(string name, int age) :m_name(name), m_age(age) {}
+//};
+//
+//class Salary
+//{
+//public:
+//	int m_salary;
+//
+//	Salary(int salary) :m_salary(salary) {}
+//};
+//
+//
+//class cmp1
+//{
+//public:
+//	bool operator()(const Salary& s1, const Salary& s2) const			//注意加上const
+//	{
+//		return s1.m_salary > s2.m_salary;
+//	}
+//};
+//
+//void printm(map<Salary, Person, cmp1>& m)
+//{
+//	for (map<Salary, Person, cmp1>::iterator it = m.begin(); it != m.end(); it++)
+//	{
+//		cout << it->first.m_salary << " " << it->second.m_name << " " << it->second.m_age << endl;
+//	}
+//}
+//
+//int main()
+//{
+//	map<Salary, Person, cmp1>m;
+//
+//	Person p1("a", 3);
+//	Person p2("b", 2);
+//	Person p3("c", 4);
+//	Person p4("d", 1);
+//
+//	Salary s1(20);
+//	Salary s2(10);
+//	Salary s3(40);
+//	Salary s4(30);
+//
+//	//注意map的排序人为只能规定key值从大到小或者从小到大
+//
+//	m.insert(pair<Salary, Person>(s1, p1));
+//	m.insert(pair<Salary, Person>(s2, p2));
+//	m.insert(pair<Salary, Person>(s3, p3));
+//	m.insert(pair<Salary, Person>(s4, p4));
+//
+//	printm(m);
+//
+//
+//	system("pause");
+//	return 0;
+//}
+
+
+////map阶段测试
+////实现十个人的部门、工资随机分配输出
+//#include<iostream>
+//#include<map>
+//#include<string>
+//#include<vector>
+//#include<ctime>
+//using namespace std;
+//
+//const int CEHUA = 0;
+//const int MEISHU = 1;
+//const int KAIFA = 2;
+//
+//class Person
+//{
+//public:
+//	string m_name;
+//	int m_salary;
+//
+//	Person(string name, int salary) :m_name(name), m_salary(salary) {}
+//};
+//
+//void createv(vector<Person>& v)
+//{
+//	string nameseed = "ABCDEFGHIJ";
+//	for (int i = 0; i < 10; i++)
+//	{
+//		string name = "姓名";
+//		name += nameseed[i];
+//
+//		int salary = rand() % 10000 + 10000;
+//		Person p(name, salary);
+//		v.push_back(p);
+//	}
+//}
+//
+//void print(const vector<Person>& p)
+//{
+//	for (vector<Person>::const_iterator it = p.begin(); it != p.end(); it++)
+//	{
+//		cout << "姓名： " << it->m_name << " 工资： " << (*it).m_salary << endl;
+//	}
+//}
+//
+//void assign(vector<Person>& v, multimap<int, Person>& m)
+//{
+//	for (vector<Person>::iterator it = v.begin(); it != v.end(); it++)
+//	{
+//		int num = rand() % 3;
+//		m.insert(make_pair(num, (*it)));
+//	}
+//}
+//
+//void showdepsal(multimap<int, Person>& m)
+//{
+//	cout << "策划部门成员如下" << endl;
+//	map<int, Person>::iterator pos = m.find(CEHUA);			//返回第一次出现的位置元素迭代器
+//	int n = m.count(CEHUA);									//返回总共出现多少次
+//	int count = 0;
+//	for (; pos != m.end() && count < n; pos++, count++)		//如果没有遍历完并且遍历到需要的数个数小于该数总数
+//	{
+//		cout << pos->second.m_name << " " << pos->second.m_salary << endl;
+//	}
+//
+//	cout << "美术部门成员如下" << endl;
+//	pos = m.find(MEISHU);			//返回第一次出现的位置元素迭代器
+//	n = m.count(MEISHU);									//返回总共出现多少次
+//	count = 0;
+//	for (; pos != m.end() && count < n; pos++, count++)		//如果没有遍历完并且遍历到需要的数个数小于该数总数
+//	{
+//		cout << pos->second.m_name << " " << pos->second.m_salary << endl;
+//	}
+//
+//	cout << "开发部门成员如下" << endl;
+//	pos = m.find(KAIFA);			//返回第一次出现的位置元素迭代器
+//	n = m.count(KAIFA);									//返回总共出现多少次
+//	count = 0;
+//	for (; pos != m.end() && count < n; pos++, count++)		//如果没有遍历完并且遍历到需要的数个数小于该数总数
+//	{
+//		cout << pos->second.m_name << " " << pos->second.m_salary << endl;
+//	}
+//
+//}
+//
+//int main()
+//{
+//	srand((unsigned int)time(NULL));
+//
+//	//首先创建10个人存到vector容器中
+//	vector<Person>v;
+//	createv(v);
+//	//print(v);
+//
+//	//再把10个人分配到3个不同的部门
+//	multimap<int, Person>m;
+//	assign(v,m);
+//
+//	//打印每个部门成员和对应工资
+//	showdepsal(m);
+//
+//
+//
+//	system("pause");
+//	return 0;
+//}
+
+
+////======================================================================================================
+////算法类
+
+////循环查找
+//#include<iostream>
+//#include<vector>
+//using namespace std;
+//
+//int main()
+//{
+//	vector<int>v;
+//	for (int i = 0; i < 10; i++) {
+//		v.push_back(i);
+//	}
+//	v.push_back(5);
+//	v.push_back(5);
+//	vector<int>::iterator it = v.begin();
+//	vector<int>::iterator pos;
+//	while (it!= v.end())				//循环查找
+//	{
+//		pos = find(it, v.end(), 5);
+//		if (pos != v.end())				//如果没有找到返回end()
+//		{
+//			cout << "找到了，位置是： " << pos - v.begin() << endl;
+//			//这里可以迭代器直接相减求位序是因为vector是线性的
+//			it = pos + 1;				//每次find从pos下一位开始
+//		}
+//		else
+//		{
+//			it = pos;					//没有找到这时候pos是end()，说明全部找完了，外面直接退出
+//		}
+//	}
+//
+//	system("pause");
+//	return 0;
+//}
+
+
+////find_if
+//#include<iostream>
+//#include<vector>
+//#include<string>
+//#include<algorithm>
+//using namespace std;
+//
+//class Person
+//{
+//public:
+//	string m_name;
+//	int m_age;
+//
+//	Person(string name, int age) :m_name(name), m_age(age) {}
+//
+//	//bool operator()(const Person& p)
+//	//{
+//	//	return this->m_age > p.m_age;
+//	//}
+//
+//};
+//
+//class Cmp							//降序排序
+//{
+//public:
+//	bool operator()(const Person& p1, const Person& p2) const
+//	{
+//		return p1.m_age > p2.m_age;
+//	}
+//};
+//
+//void print1(const Person&p) 
+//{
+//	cout << p.m_name << " " << p.m_age << endl;
+//}
+//
+//class Print2
+//{
+//public:
+//	void operator()(const Person& p) const
+//	{
+//		cout << p.m_name << " " << p.m_age << endl;
+//	}
+//};
+//
+//Person trans1(Person p)
+//{
+//	return p;
+//}
+//
+//class Trans2
+//{
+//public:
+//	Person operator()(const Person p)
+//	{
+//		//Person p1(p.m_name, p.m_age);
+//		//return p1;
+//		return p;
+//	}
+//};
+//
+//int main()
+//{
+//	vector<Person>v;
+//	Person p1("a", 18);
+//	Person p2("b", 16);
+//	Person p3("c", 11);
+//	Person p4("d", 19);
+//	Person p5("e", 12);
+//	Person p6("f", 20);
+//
+//	v.push_back(p1);
+//	v.push_back(p2);
+//	v.push_back(p3);
+//	v.push_back(p4);
+//	v.push_back(p5);
+//	v.push_back(p6);
+//
+//	sort(v.begin(), v.end(), Cmp());		//按年龄降序排序
+//
+//	//for_each(v.begin(), v.end(), print1);	//使用普通函数参数遍历
+//	for_each(v.begin(), v.end(), Print2()); //使用谓词
+//
+//	vector<Person>v2;
+//	v2.resize(v.size(),p1);		//注意要先为v2开辟足够空间，对于自定义数据类型还必须加上自定义数据类型大小
+//	//transform(v.begin(), v.end(), v2.begin(), trans1);
+//	transform(v.begin(), v.end(), v2.begin(), Trans2());
+//	for_each(v2.begin(), v2.end(), Print2());//使用谓词
+//
+//	system("pause");
+//	return 0;
+//}
